@@ -1,0 +1,1 @@
+/opt/git/github.com/fenhl/info-beamer-text/master/text.lua
