@@ -8,7 +8,6 @@ import pathlib
 import re
 import requests
 import sleeptill
-import socket
 
 def format_timedelta(timestamp):
     minutes, seconds = divmod(timestamp.total_seconds(), 60)
