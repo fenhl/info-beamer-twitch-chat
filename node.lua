@@ -9,7 +9,7 @@ util.resource_loader{
     "dejavu_sans.ttf"
 }
 
-local write = text(dejavu_sans, WIDTH, HEIGHT)
+local write = text{font=dejavu_sans, width=WIDTH, height=HEIGHT, r=1, g=1, b=1}
 
 local data = nil
 
