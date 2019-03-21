@@ -30,21 +30,21 @@ end)
 function node.render()
     gl.clear(0, 0, 0, 1)
     local text_size = 64
-    local max_y = HEIGHT - text_size / 2
-    for i = #data, 1, -1 do
-        local timestamp_dims = write{text={{data[i].timestamp}}, size=text_size, max_y=max_y, halign="left", valign="bottom"}
-        local username_dims
+    local text = {}
+    for i = 1, #data do
+        local formatted_username
         if data[i].userColor == nil then
-            username_dims = write{text={{data[i].user}}, size=text_size, max_y=max_y, indent=timestamp_dims.final_indent_space, halign="left", valign="bottom"}
+            formatted_username = data[i].user
         else
-            username_dims = write{text={{data[i].user}}, size=text_size, max_y=max_y, indent=timestamp_dims.final_indent_space, halign="left", valign="bottom", color=data[i].userColor}
+            formatted_username = {word=data[i].user, color=data[i].userColor}
         end
-        local msg_dims
+        local msg_prefix
         if data[i].isAction then
-            msg_dims = write{text={data[i].message}, size=text_size, max_y=max_y, indent=username_dims.final_indent_space, halign="left", valign="bottom"}
+            msg_prefix = {}
         else
-            msg_dims = write{text={concat{{":"}, data[i].message}}, size=text_size, max_y=max_y, indent=username_dims.final_indent, halign="left", valign="bottom"}
+            msg_prefix = {{word=":", space_before=false}}
         end
-        max_y = max_y - msg_dims.height - text_size / 2
+        text[#text + 1] = concat{{data[i].timestamp, formatted_username}, msg_prefix, data[i].message}
     end
+    write{text=text, size=text_size, max_y=max_y, halign="left", valign="bottom"}
 end
