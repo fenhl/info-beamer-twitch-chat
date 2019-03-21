@@ -39,7 +39,13 @@ function node.render()
         else
             username_dims = write{text={{data[i].user}}, size=text_size, max_y=max_y, indent=timestamp_dims.final_indent_space, halign="left", valign="bottom", color=data[i].userColor}
         end
-        local msg_dims = write{text={concat{{":"}, data[i].message}}, size=text_size, max_y=max_y, indent=username_dims.final_indent, halign="left", valign="bottom"}
+        local message_prefix
+        if data[i].isAction then
+            message_prefix = ""
+        else
+            message_prefix = ":"
+        end
+        local msg_dims = write{text={concat{{message_prefix}, data[i].message}}, size=text_size, max_y=max_y, indent=username_dims.final_indent, halign="left", valign="bottom"}
         max_y = max_y - msg_dims.height - text_size / 2
     end
 end

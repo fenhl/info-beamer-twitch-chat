@@ -39,6 +39,7 @@ def format_message(message):
     result = {
         'timestamp': format_timedelta(datetime.timedelta(seconds=message['content_offset_seconds'])),
         'user': message['commenter']['display_name'],
+        'isAction': message['message']['is_action'],
         'message': message['message']['body'].split(' ') #TODO use fragments instead and apply formatting
     }
     if 'user_color' in message['message']:
