@@ -26,11 +26,24 @@ def format_timedelta(timestamp):
     hours, minutes = divmod(minutes, 60)
     return '{:02}:{:02}:{:02}'.format(int(hours), int(minutes), int(seconds))
 
+def format_color(color_str):
+    if color_str.startswith('#'):
+        color_str = color_str[1:]
+    return {
+        'r': int(color_str[0:2], 16) / 255,
+        'g': int(color_str[2:4], 16) / 255,
+        'b': int(color_str[4:6], 16) / 255
+    }
+
 def format_message(message):
-    return [
-        format_timedelta(datetime.timedelta(seconds=message['content_offset_seconds'])),
-        '{}:'.format(message['commenter']['display_name'])
-    ] + message['message']['body'].split(' ') #TODO use fragments instead and apply formatting
+    result = {
+        'timestamp': format_timedelta(datetime.timedelta(seconds=message['content_offset_seconds'])),
+        'user': message['commenter']['display_name'],
+        'message': message['message']['body'].split(' ') #TODO use fragments instead and apply formatting
+    }
+    if 'user_color' in message['message']:
+        result['userColor'] = format_color(message['message']['user_color'])
+    return result
 
 def get_json(*args, headers={}, **kwargs):
     response = requests.get(*args, headers={'Client-ID': client_id(), **headers}, **kwargs)
